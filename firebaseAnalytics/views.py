@@ -15,7 +15,7 @@ authe = firebase.auth()
 database=firebase.database()
  
 def home(request):
-    day = database.child('Data').child('Day').get().val()
-    id = database.child('Data').child('Id').get().val()
-    projectname = database.child('Data').child('Projectname').get().val()
-    return render(request,"Home.html",{"day":day,"id":id,"projectname":projectname })
+    user1 = database.child('Users').child(1).get()
+    user2 = database.child('Users').child(2).get()
+    user3 = database.child('Users').child(3).get()
+    return render(request,"Home.html",{"user 1":user1,"user 2":user2,"user 3":user3 })
