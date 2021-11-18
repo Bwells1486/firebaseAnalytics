@@ -12,6 +12,18 @@ ref = db.reference('/')
 
 
 def home(request):
+
+    # Total number of users for reference
+    total_users = (len(ref.child("Users").get()))
+
+    # Finding number of users with and without connected instagram accounts
+    non_insta_users = (len(ref.child("Users").order_by_child("instagram").equal_to('null').get()))
+    users_with_instagram = total_users - non_insta_users
+
+    # Finding number of users with and without connected twitter accounts
+    non_twitter_users = (len(ref.child("Users").order_by_child("twitter").equal_to('null').get()))
+    users_with_twitter = total_users - non_twitter_users
+
     user1 = ref.child('Users').child('1').get()
     user2 = ref.child('Users').child('2').get()
     user3 = ref.child('Users').child('3').get()
