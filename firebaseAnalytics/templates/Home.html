@@ -25,44 +25,64 @@ User 2 Data is {{ user2 }}
 
 <h5>
     <canvas id="myChart" width="400" height="400"></canvas>
+    <canvas id="instagramPie" width="400" height="400"></canvas>
+    <canvas id="twitterPie" width="400" height="400"></canvas>
 </h5>
 
 </body>
 <script>
-const ctx = document.getElementById('myChart').getContext('2d');
-const myChart = new Chart(ctx, {
-    type: 'bar',
+
+// Calculate percentage for Instagram users
+var instaP = Math.round(users_with_instagram*100/total_users);
+var non_instaP = Math.round(non_insta_users*100/total_users);
+
+// Calculate percentage for Twitter users
+var twitterP = Math.round(users_with_twitter*100/total_users);
+var non_twitterP = Math.round(non_twitter_users*100/total_users);
+
+// Pie Chart for Instagram Accounts
+const ctxInsta = document.getElementById('instagramPie').getContext('2d');
+const instagramPie = new Chart(ctxInsta, {
+    type: 'pie',
     data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: ['Instagram User '+instaP+'%', 'Non-Instagram User '+instaP+'%'],
         datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
+            label: 'Connected Instagram Accounts',
+            data: [instaP, non_instaP],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(54, 162, 235, 0.2)'
             ],
             borderColor: [
                 'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
+                'rgba(54, 162, 235, 1)'
             ],
             borderWidth: 1
         }]
     },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
 });
+
+// Pie Chart for Twitter Accounts
+const ctxTwitter = document.getElementById('twitterPie').getContext('2d');
+const twitterPie = new Chart(ctxTwitter, {
+    type: 'pie',
+    data: {
+        labels: ['Twitter User '+instaP+'%', 'Non-Twitter User '+instaP+'%'],
+        datasets: [{
+            label: 'Connected Twitter Accounts',
+            data: [twitterP, non_twitterP],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+});
+
 </script>
 </html>

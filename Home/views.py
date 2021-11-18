@@ -24,8 +24,23 @@ def home(request):
     non_twitter_users = (len(ref.child("Users").order_by_child("twitter").equal_to('null').get()))
     users_with_twitter = total_users - non_twitter_users
 
+    print(total_users, non_insta_users, users_with_instagram, non_twitter_users, users_with_twitter)
+
     user1 = ref.child('Users').child('1').get()
     user2 = ref.child('Users').child('2').get()
     user3 = ref.child('Users').child('3').get()
     print(user1, user2, user3)
-    return render(request, "Home.html", {"user1": user1, "user2": user2, "user3": user3})
+
+    # List of variables to send to Render
+    context = {
+        "user1": user1,
+        "user2": user2,
+        "user3": user3,
+        "total_users": total_users, 
+        "non_insta_users": non_insta_users, 
+        "users_with_instagram": users_with_instagram, 
+        "non_twitter_users": non_twitter_users, 
+        "users_with_twitter": users_with_twitter
+    }
+
+    return render(request, "Home.html", context)
