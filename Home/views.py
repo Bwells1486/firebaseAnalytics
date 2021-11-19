@@ -4,7 +4,7 @@ import firebase_admin
 from firebase_admin import credentials, db
 import os
 CERT_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)),
-                         'authentication_files\\rogue-media-project-firebase-adminsdk-kv4p4-6c60a69824.json')
+                         'authentication_files/rogue-media-project-firebase-adminsdk-kv4p4-2a0cb5f100.json')
 print(CERT_FILE)
 cred = credentials.Certificate(CERT_FILE)
 firebase_admin.initialize_app(cred, {'databaseURL': 'https://rogue-media-project-default-rtdb.firebaseio.com/'})
@@ -33,6 +33,7 @@ def home(request):
 
     # List of variables to send to Render
     context = {
+        "users": user[user1, user2, user3],
         "user1": user1,
         "user2": user2,
         "user3": user3,
@@ -40,7 +41,7 @@ def home(request):
         "non_insta_users": non_insta_users, 
         "users_with_instagram": users_with_instagram, 
         "non_twitter_users": non_twitter_users, 
-        "users_with_twitter": users_with_twitter
+        "users_with_twitter": users_with_twitter,
     }
 
     return render(request, "Home.html", context)

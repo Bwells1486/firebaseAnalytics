@@ -1,25 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sample Project</title>
-</head>
-<body>
-<H1>
-This is a Test
-    </H1>
-<br/>
-<h2>
-User 1 Data is {{ user1 }}
-    </h2>
-<br>
-<h3>
-User 2 Data is {{ user2 }}
-    </h3>
-<br>
-<h4>
-    User 3 Data is {{ user3 }}
-        </h4>
-    <br>
-</body>
+    <style>
+      .user-grid {
+        display: grid;
+        grid-auto-flow: row;
+        grid-gap: 5px;
+      }
+
+      @media (min-width: 992px) {
+        .user-grid {
+          grid-auto-flow: column;
+        }
+      }
+      .card {
+        width: 400px;
+        background-color: whitesmoke;
+        border-radius: 10px;
+      }
+
+      .image-wrapper {
+        height: 200px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+
+        border-radius: 10px 10px 0px 0px;
+      }
+
+      .profile-image {
+        width: 100%;
+        min-height: 100%;
+      }
+
+      .card-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        padding: 25px;
+      }
+
+      .profile_name {
+        text-align: center;
+        grid-column: 1 / -1;
+      }
+
+      .followers,
+      .following {
+        text-align: center;
+      }
+
+      .followers > p:first-child,
+      .following > p:first-child {
+        font-size: larger;
+        font-weight: bold;
+        margin-bottom: 0;
+      }
+
+      .user_info {
+        grid-column: 1 / -1;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>User Data</h1>
+    <br />
+    <div class="user-grid">
+      {% for user in users %}
+      <div class="card">
+        <div class="image-wrapper">
+          <img class="profile-image" src="{{user.photo_url}}" alt="" />
+        </div>
+        <div class="card-content">
+          <div class="profile_name">
+            <h1>{{user.name}}</h1>
+            <h2>@{{user.username}}</h2>
+          </div>
+          <div class="followers">
+            <p>{{user.num_followers}}</p>
+            <p>Followers</p>
+          </div>
+          <div class="following">
+            <p>{{user.num_following}}</p>
+            <p>Following</p>
+          </div>
+          <div class="user_info">
+            <p><b>User ID</b>: {{user.user_id}}</p>
+            <p><b>Time Created</b>: {{user.time_created}}</p>
+            <p><b>Twitter</b>: {{user.twitter}}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <br />
+    <div>
+      <span>{{user1}}</span>
+      <p>Total Users: <b>{{ total_users }}</b></p>
+      <p>Users Not on Instagram: {{ non_insta_users }}</p>
+      <p>Users With Instagram: {{ users_with_instagram }}</p>
+      <p>Users Not on Twitter: {{ non_twitter_users }}</p>
+      <p>Users With Twitter: {{ users_with_twitter }}</p>
+    </div>
+  </body>
 </html>
