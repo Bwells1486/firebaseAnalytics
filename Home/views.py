@@ -4,7 +4,7 @@ import firebase_admin
 from firebase_admin import credentials, db
 import os
 import datetime
-import dateutil.relativedelta
+from datetime import timedelta
 CERT_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)),
                          'authentication_files/rogue-media-project-firebase-adminsdk-kv4p4-2a0cb5f100.json')
 print(CERT_FILE)
@@ -33,7 +33,7 @@ def home(request):
     current_date = datetime.date.today()
     current_date_obj = current_date.strftime(date_format)
     n = 12 # Include number of months back to start at here
-    past_date = current_date - relativedelta(months=n)
+    past_date = current_date - timedelta(days=30*n)
     past_date_str = past_date.strftime(date_format)
     num_users_since = (len(ref.child("Users").order_by_child("time_created").start_at(past_date_str).get()))
 
@@ -41,10 +41,11 @@ def home(request):
     user2 = ref.child('Users').child('2').get()
     user3 = ref.child('Users').child('3').get()
     print(user1, user2, user3)
+    userlist = [user1, user2, user3]
 
     # List of variables to send to Render
     context = {
-        "users": user[user1, user2, user3],
+        "users": userlist,
         "user1": user1,
         "user2": user2,
         "user3": user3,
