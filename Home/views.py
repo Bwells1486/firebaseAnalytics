@@ -35,7 +35,7 @@ def home(request):
     n = 12 # Include number of months back to start at here
     past_date = current_date - relativedelta(months=n)
     past_date_str = past_date.strftime(date_format)
-    num_users_since = len(ref.child("Users").order_by_child("time_created").start_at(past_date_str).get()))
+    num_users_since = (len(ref.child("Users").order_by_child("time_created").start_at(past_date_str).get()))
 
     user1 = ref.child('Users').child('1').get()
     user2 = ref.child('Users').child('2').get()
