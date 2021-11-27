@@ -1,4 +1,1 @@
-.idea
-*.pyo
-*.pyc
-authentication_files
+.DS_STORE
