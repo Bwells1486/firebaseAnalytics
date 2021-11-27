@@ -1,0 +1,4 @@
+.idea
+*.pyo
+*.pyc
+authentication_files
