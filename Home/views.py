@@ -26,7 +26,8 @@ def home(request):
     non_twitter_users = (len(ref.child("Users").order_by_child("twitter").equal_to('null').get()))
     users_with_twitter = total_users - non_twitter_users
 
-    print(total_users, non_insta_users, users_with_instagram, non_twitter_users, users_with_twitter)
+    # Finding top 10 users by followers
+    users_by_followers = ref.child("Users").order_by_child("num_followers").limit_to_last(10).get()
     
     # Formula for creating date certain amounts of months since today
     date_format = '%Y-%m-%d'
@@ -40,7 +41,6 @@ def home(request):
     user1 = ref.child('Users').child('1').get()
     user2 = ref.child('Users').child('2').get()
     user3 = ref.child('Users').child('3').get()
-    print(user1, user2, user3)
     userlist = [user1, user2, user3]
 
     # List of variables to send to Render
@@ -55,6 +55,7 @@ def home(request):
         "non_twitter_users": non_twitter_users, 
         "users_with_twitter": users_with_twitter,
         "num_users_since": num_users_since,
+        "users_by_followers": users_by_followers,
     }
 
     return render(request, "Home.html", context)
