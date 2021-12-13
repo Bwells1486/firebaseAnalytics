@@ -11,36 +11,75 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-            <div class="tile job">
-                <div class="header">
-                    <div class="count">{{ total_users }}</div>
-                    <div class="title">Total App Users</div>
-                </div>
-            </div>
+      <div class="col-12">
+        <div class="my-5">
+          <h1>Dashboard</h1>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <canvas id="instagramPie" width="400" height="400"></canvas>
+      </div>
+      <div class="col-lg-3 mb-4">
+        <div class="card">
+          <div class="border-bottom pt-2 bg-light">
+            <h5 class="mx-3">Total Users</h5>
+          </div>
+          <div class="card-body text-center">
+            <h1 class="display-2 font-weight-normal">{{ total_users }}</h1>
+          </div>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-6 col-lg-4">
-            <canvas id="twitterPie" width="400" height="400"></canvas>
+      </div>
+      <div class="col-lg-3 mb-4">
+        <div class="card">
+          <div class="border-bottom pt-2 bg-light">
+            <h5 class="mx-3">Non Social Users</h5>
+          </div>
+          <div class="card-body text-center">
+            <h1 class="display-2 font-weight-normal">{{ non_social_users }}</h1>
+          </div>
         </div>
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-            <div class="tile job">
-                <div class="header">
-                    <div class="count">{{ non_social_users }}</div>
-                    <div class="title">Non Social Users</div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
     <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <canvas id="usersRD" width="400" height="400"></canvas>
+      <div class="col-lg-6 mb-4">
+        <div class="card">
+          <div class="border-bottom pt-2 bg-light">
+            <h5 class="mx-3">Connected Instagram Accounts</h5>
+          </div>
+          <div class="card-body">
+            <canvas id="instagramPie"></canvas>
+          </div>
         </div>
-        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <canvas id="usersGrowth" width=auto height=auto></canvas>
+      </div>
+      <div class="col-lg-6 mb-4">
+        <div class="card">
+          <div class="border-bottom pt-2 bg-light">
+            <h5 class="mx-3">Connected Twitter Accounts</h5>
+          </div>
+          <div class="card-body">
+            <canvas id="twitterPie"></canvas>
+          </div>
         </div>
+      </div>
+      <div class="col-lg-6 mb-4">
+        <div class="card">
+          <div class="border-bottom pt-2 bg-light">
+            <h5 class="mx-3">User Referrals/Direct</h5>
+          </div>
+          <div class="card-body">
+              <canvas id="usersRD"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col-lg-8 mb-4">
+          <div class="card">
+            <div class="border-bottom pt-2 bg-light">
+              <h5 class="mx-3">User Growth Past 6 Months</h5>
+            </div>
+            <div class="card-body">
+              <canvas id="usersGrowth"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 </div>
 
@@ -100,6 +139,12 @@ var insta_config = {
             borderWidth: 1
         }]
     },
+    options: {
+      responsive: true,
+      legend: {
+        position: 'bottom',
+      },
+    }
 };
 
 var twitter_config = {
@@ -120,6 +165,12 @@ var twitter_config = {
             borderWidth: 1
         }]
     },
+    options: {
+      responsive: true,
+      legend: {
+        display: 'bottom',
+      },
+    }
 };
 
 var user_grwoth_config = {
@@ -136,15 +187,9 @@ var user_grwoth_config = {
   ]},
   options: {
     responsive: true,
-    plugins: {
       legend: {
-        position: 'top',
+        display: false,
       },
-      title: {
-        display: true,
-        text: 'Users Growth past 6 Months'
-      }
-    }
   },
 };
 
@@ -179,9 +224,17 @@ const usersRDdata = {
 const usersRDconfig = {
   type: 'doughnut',
   data: usersRDdata,
+  options: {
+    responsive: true,
+      legend: {
+        position: 'bottom',
+      },
+  },
 };
 
 const ctxUsersRD = document.getElementById('usersRD').getContext('2d');
 const usersRD = new Chart(ctxUsersRD, usersRDconfig);
+
 </script>
+
 {% endblock %}
