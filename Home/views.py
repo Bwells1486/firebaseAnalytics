@@ -1,58 +1,47 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect
 import datetime
 from dbfire.users import get_all_users, get_social_users, get_filtered_users
-# from datetime import timedelta
+from datetime import timedelta
+
+
+
+def signin(request):
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['pass']
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, "Bad Credentials!")
+            return redirect('signin')
+
+    return render(request, "signin.html")
+
+
+def signout(request):
+    logout(request)
+    messages.success(request, "You have been logged out successfully!")
+    return redirect('signin')
+
+
+def index(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    else:
+        return redirect('signin')
 
 
 def home(request):
     """
     Dashboard View. Consists summary statics of App
     """
-    # Old Logic Commented
-    # # Total number of users for reference
-    # total_users = (len(ref.child("Users").get()))
-    #
-    # # Finding number of users with and without connected instagram accounts
-    # non_insta_users = (len(ref.child("Users").order_by_child("instagram").equal_to('null').get()))
-    # users_with_instagram = total_users - non_insta_users
-    #
-    # # Finding number of users with and without connected twitter accounts
-    # non_twitter_users = (len(ref.child("Users").order_by_child("twitter").equal_to('null').get()))
-    # users_with_twitter = total_users - non_twitter_users
-    #
-    # # Finding top 10 users by followers
-    # users_by_followers = ref.child("Users").order_by_child("num_followers").limit_to_last(10).get()
-    #
-    # # Formula for creating date certain amounts of months since today
-    # date_format = '%Y-%m-%d'
-    # current_date = datetime.date.today()
-    # current_date_obj = current_date.strftime(date_format)
-    # n = 12 # Include number of months back to start at here
-    # past_date = current_date - timedelta(days=30*n)
-    # past_date_str = past_date.strftime(date_format)
-    # num_users_since = (len(ref.child("Users").order_by_child("time_created").start_at(past_date_str).get()))
-    #
-    # user1 = ref.child('Users').child('1').get()
-    # user2 = ref.child('Users').child('2').get()
-    # user3 = ref.child('Users').child('3').get()
-    # userlist = [user1, user2, user3]
-    #
-    # # List of variables to send to Render
-    # context = {
-    #     "users": userlist,
-    #     "user1": user1,
-    #     "user2": user2,
-    #     "user3": user3,
-    #     "total_users": total_users,
-    #     "non_insta_users": non_insta_users,
-    #     "users_with_instagram": users_with_instagram,
-    #     "non_twitter_users": non_twitter_users,
-    #     "users_with_twitter": users_with_twitter,
-    #     "num_users_since": num_users_since,
-    #     "users_by_followers": users_by_followers,
-    # }
 
-    # New Logic
     # Getting All Users
     total_users, all_users = get_all_users()
 
@@ -77,13 +66,33 @@ def home(request):
     # Users with twitter only accounts, no insta
     users_with_twitter_only = len(get_social_users(('twitter',), True))
 
+    # Users without any Social Account
+    non_social_users = len(get_social_users(tuple()))
+
+    # Users in past 6 months
+    month_start = datetime.datetime.today().replace(day=1).strftime("%Y-%m-%d").split('-')
+    month_start = datetime.datetime(*list(map(int, month_start)),
+                      tzinfo=datetime.timezone.utc)
+    months_ago = {}
+    for i in range(7):
+        month_ago_date = (month_start - timedelta(days=430+30*(6-i)))
+        month_ago_month = month_ago_date.strftime('%B-%y')
+        month_ago_date = month_ago_date.strftime("%Y-%m-%dT%H:%M:%S%z")
+        month_ago_date = month_ago_date[:-2] + ":" + month_ago_date[-2:]
+        months_ago[month_ago_month] = len(get_filtered_users({'time_created': (month_ago_date, 'lte')}))
+
     # Top 10 Users with highest number of followers
     users_by_followers = get_filtered_users({}, 10, 'desc', 'num_followers')
+
+    # Users joined through referrals
+    referred_users = len(get_filtered_users({'invited_by_user_profile': ('null', 'eq')}))
+    direct_users = total_users - referred_users
 
     # Num of Users joined since a specified date
     time_since = datetime.datetime(2020, 5, 1, 0, 0, 0, 0,
                                    tzinfo=datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%S%z")
     time_since = time_since[:-2] + ":" + time_since[-2:]
+    time_since_str = datetime.datetime(2020, 5, 1, 0, 0, 0, 0, tzinfo=datetime.timezone.utc).strftime("%m-%d-%y")
     num_users_since = len(get_filtered_users({'time_created': (time_since, 'gte')}))
 
     # List of variables to send to Render
@@ -94,6 +103,11 @@ def home(request):
         "non_twitter_users": non_twitter_users,
         "users_with_twitter": users_with_twitter,
         "num_users_since": num_users_since,
+        "time_since": time_since_str,
+        "direct_users": direct_users,
+        "referred_users": referred_users,
+        "non_social_users": non_social_users,
+        "months_ago": months_ago,
         # "users_by_followers": users_by_followers,
         # "twitter_insta_users": users_with_twitter_or_insta,
         # "users_insta_only": users_with_insta_only,
