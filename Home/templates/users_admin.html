@@ -1,12 +1,18 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %} Rogue Media | User Admin {% endblock %}
-
+ {% block additional_stylesheets %}
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="{% static 'css/User_Profile.css' %}" rel="stylesheet">
+    {% endblock %}
 {% block body %}
-    <!-- Navbar Search -->
-    <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+<div class="container">
+    <br>
+    <div class="row">
+        <!-- Navbar Search -->
+        <form class="d-none d-md-inline-block form-inline ml-auto ml-0 ml-md-3 my-2 my-md-0">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+        <input type="text" class="form-control" name="q" placeholder="Search User" aria-label="Search" aria-describedby="basic-addon2">
         <div class="input-group-append">
           <button class="btn btn-primary" type="button">
             <i class="fas fa-search"></i>
@@ -14,5 +20,61 @@
         </div>
       </div>
     </form>
+    </div>
+    <br><br><br>
+    {% for user in users %}
+    <div class="row">
+        <!-- User Profile Card -->
 
+    <div class="col-md-12">
+        <!-- Column -->
+        <div class="card">
+            <div class="card-body little-profile text-center">
+                <div class="pro-img"><img src="https://i.imgur.com/8RKXAIV.jpg" alt="user"></div>
+                <h3 class="m-b-0">{{ user.name }}</h3>
+                <p>@{{ user.username }}{% if user.invited_by_user_profile != "null" %}| Invited by {{ user.invited_by_user_profile }} {% endif %}</p>
+                <div class="social-buttons mt-5">
+                    {% if user.instagram == "null" %}
+                    <button class="neo-button" disabled>
+                        <i class="fa fa-instagram fa-1x"></i>
+                    </button>
+                    {% else %}
+                    <a href="https://instagram.com/{{ user.instagram }}">
+                        <button class="neo-button">
+                            <i class="fa fa-instagram fa-1x"></i>
+                        </button>
+                    </a>
+                    {% endif %}
+
+
+                        {% if user.twitter == "null" %}
+                        <button class="neo-button" disabled>
+                            <i class="fa fa-twitter fa-1x"></i>
+                        </button>
+                        {% else %}
+                    <a href="https://twitter.com/{{ user.twitter }}/">
+                        <button class="neo-button" disabled>
+                            <i class="fa fa-twitter fa-1x"></i>
+                        </button>
+                        </a>
+                        {% endif %}
+
+                </div>
+            </div>
+            <div class="row text-center m-t-20">
+                    <div class="col-lg-4 col-md-4 m-t-20">
+                        <h3 class="m-b-0 font-light">{{ user.num_followers }}</h3><small>Followers</small>
+                    </div>
+                    <div class="col-lg-4 col-md-4 m-t-20">
+                        <h3 class="m-b-0 font-light">{{ user.num_following }}</h3><small>Following</small>
+                    </div>
+                    <div class="col-lg-4 col-md-4 m-t-20">
+                        <h3 class="m-b-0 font-light">{{ user.time_created }}</h3><small>Member Since</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
 {% endblock %}

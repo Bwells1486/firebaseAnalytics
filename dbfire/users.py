@@ -126,7 +126,11 @@ def get_user_by_id(user_id):
     :param user_id: User ID of the user. Unique to every user
     :returns User object
     """
-    return db_to_user(db_users.order_by_child('user_id').equal_to(user_id).get())[0]
+    user = db_to_user(db_users.order_by_child('user_id').equal_to(user_id).get())
+    if user:
+        return user[0]
+    else:
+        return None
 
 
 def get_users_by_name(name):
@@ -144,7 +148,11 @@ def get_user_by_insta(insta_id):
     :param insta_id: Instagram ID of the user. Unique to every user
     :returns User object
     """
-    return db_to_user(db_users.order_by_child('instagram').equal_to(insta_id).get())[0]
+    user = db_to_user(db_users.order_by_child('instagram').equal_to(insta_id).get())
+    if user:
+        return user[0]
+    else:
+        return None
 
 
 def get_user_by_twitter(twitter_id):
@@ -153,7 +161,11 @@ def get_user_by_twitter(twitter_id):
     :param twitter_id: Twitter ID of the user. Unique to every user
     :returns User object
     """
-    return db_to_user(db_users.order_by_child('twitter').equal_to(twitter_id).get())[0]
+    user = db_to_user(db_users.order_by_child('twitter').equal_to(twitter_id).get())
+    if user:
+        return user[0]
+    else:
+        return None
 
 
 def get_user_by_username(username):
@@ -162,4 +174,8 @@ def get_user_by_username(username):
     :param username: User Name of the user. Unique to every user
     :returns User object
     """
-    return db_to_user(db_users.order_by_child('username').equal_to(username).get())[0]
+    user = db_to_user(db_users.order_by_child('username').equal_to(username).get())
+    if user:
+        return user[0]
+    else:
+        return None
