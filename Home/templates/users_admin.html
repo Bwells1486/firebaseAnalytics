@@ -1,80 +1,126 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block title %} Rogue Media | User Admin {% endblock %}
- {% block additional_stylesheets %}
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="{% static 'css/User_Profile.css' %}" rel="stylesheet">
-    {% endblock %}
-{% block body %}
+{% extends 'base.html' %} {% load static %} {% block title %} Rogue Media | User
+Admin {% endblock %} {% block additional_stylesheets %}
+<link
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+  rel="stylesheet"
+/>
+<link href="{% static 'css/User_Profile.css' %}" rel="stylesheet" />
+{% endblock %} {% block body %}
 <div class="container">
-    <br>
-    <div class="row">
-        <!-- Navbar Search -->
-        <form class="d-none d-md-inline-block form-inline ml-auto ml-0 ml-md-3 my-2 my-md-0">
-      <div class="input-group">
-        <input type="text" class="form-control" name="q" placeholder="Search User" aria-label="Search" aria-describedby="basic-addon2">
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="button">
-            <i class="fas fa-search"></i>
-          </button>
+  <div class="row">
+    <div class="col-12">
+      <div class="my-5">
+        <h1>User Admin</h1>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-11">
+      <div class="card">
+        <div class="card-body">
+          <form class="row justify-content-md-center mb-0">
+            <div class="col-md-8 pr-sm-0 mb-3 mb-md-0">
+              <input
+                class="form-control mr-sm-2"
+                type="text"
+                name="q"
+                placeholder="Search User"
+                aria-label="Search"
+                aria-describedby="basic-addon2"
+              />
+            </div>
+            <div class="col-md-2 pl-sm-0 text-center">
+              <button
+                class="btn btn-outline-success my-2 my-sm-0"
+                type="submit"
+              >
+                Search
+              </button>
+            </div>
+          </form>
+          {% for user in users %}
+            <div class="row mt-5 border-bottom">
+              <div class="col-12 col-md text-center mb-3">
+                <img
+                  src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80"
+                  class="rounded-circle profile-image"
+                  alt="Cinque Terre"
+                />
+              </div>
+              <div
+                class="
+                  col-12 col-md-3
+                  d-flex
+                  align-items-center
+                  justify-content-center justify-content-md-start
+                "
+              >
+                <div class="text-center text-md-left">
+                  <h4 class="mb-0">{{ user.name }}</h4>
+                  <p class="text-muted mb-0">
+                    <small>
+                      @{{ user.username }}{% if user.invited_by_user_profile != "null" %}| Invited by {{ user.invited_by_user_profile }} {% endif %}
+                    </small>
+                  </p>
+                </div>
+              </div>
+              <div class="col d-flex align-items-center justify-content-center">
+                <div class="text-center">
+                  <h6 class="mb-0">123</h6>
+                  <p class="text-muted mb-0"><small>Followers</small></p>
+                </div>
+              </div>
+              <div class="col d-flex align-items-center justify-content-center">
+                <div class="text-center">
+                  <h6 class="mb-0">123</h6>
+                  <p class="text-muted mb-0"><small>Following</small></p>
+                </div>
+              </div>
+              <div class="col d-flex align-items-center justify-content-center">
+                <div class="text-center">
+                  <h6 class="mb-0">12 April 2020</h6>
+                  <p class="text-muted mb-0"><small>Member Since</small></p>
+                </div>
+              </div>
+              <div
+                class="
+                  col-12 col-md
+                  d-flex
+                  align-items-center
+                  justify-content-center
+                  my-3
+                  mb-md-0
+                "
+              >
+                <div class="text-center">
+                  {% if user.instagram == "null" %}
+                  <button class="btn btn-outline-dark mx-1" disabled>
+                    <i class="fa fa-instagram fa-1x"></i>
+                  </button>
+                  {% else %}
+                  <a href="https://instagram.com/{{ user.instagram }}">
+                    <button class="btn btn-outline-danger mx-1">
+                      <i class="fa fa-instagram fa-1x"></i>
+                    </button>
+                  </a>
+                  {% endif %} {% if user.twitter == "null" %}
+                  <button class="btn btn-outline-dark mx-1" disabled>
+                    <i class="fa fa-twitter fa-1x"></i>
+                  </button>
+                  {% else %}
+                  <a href="https://twitter.com/{{ user.twitter }}/">
+                    <button class="btn btn-outline-primary mx-1">
+                      <i class="fa fa-twitter fa-1x"></i>
+                    </button>
+                  </a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
         </div>
       </div>
-    </form>
     </div>
-    <br><br><br>
-    {% for user in users %}
-    <div class="row">
-        <!-- User Profile Card -->
-
-    <div class="col-md-12">
-        <!-- Column -->
-        <div class="card">
-            <div class="card-body little-profile text-center">
-                <div class="pro-img"><img src="https://i.imgur.com/8RKXAIV.jpg" alt="user"></div>
-                <h3 class="m-b-0">{{ user.name }}</h3>
-                <p>@{{ user.username }}{% if user.invited_by_user_profile != "null" %}| Invited by {{ user.invited_by_user_profile }} {% endif %}</p>
-                <div class="social-buttons mt-5">
-                    {% if user.instagram == "null" %}
-                    <button class="neo-button" disabled>
-                        <i class="fa fa-instagram fa-1x"></i>
-                    </button>
-                    {% else %}
-                    <a href="https://instagram.com/{{ user.instagram }}">
-                        <button class="neo-button">
-                            <i class="fa fa-instagram fa-1x"></i>
-                        </button>
-                    </a>
-                    {% endif %}
-
-
-                        {% if user.twitter == "null" %}
-                        <button class="neo-button" disabled>
-                            <i class="fa fa-twitter fa-1x"></i>
-                        </button>
-                        {% else %}
-                    <a href="https://twitter.com/{{ user.twitter }}/">
-                        <button class="neo-button" disabled>
-                            <i class="fa fa-twitter fa-1x"></i>
-                        </button>
-                        </a>
-                        {% endif %}
-
-                </div>
-            </div>
-            <div class="row text-center m-t-20">
-                    <div class="col-lg-4 col-md-4 m-t-20">
-                        <h3 class="m-b-0 font-light">{{ user.num_followers }}</h3><small>Followers</small>
-                    </div>
-                    <div class="col-lg-4 col-md-4 m-t-20">
-                        <h3 class="m-b-0 font-light">{{ user.num_following }}</h3><small>Following</small>
-                    </div>
-                    <div class="col-lg-4 col-md-4 m-t-20">
-                        <h3 class="m-b-0 font-light">{{ user.time_created }}</h3><small>Member Since</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-    </div>
+  </div>
+</div>
 {% endblock %}
