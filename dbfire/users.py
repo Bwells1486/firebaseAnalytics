@@ -104,20 +104,21 @@ def get_filtered_users(filters, limit=None, order='asc', limit_by='user_id'):
         condition = value[1]
         value = value[0]
         if condition == 'eq':
-            user_query = user_query.order_by_child(key).equal_to(value)
+            data = user_query.order_by_child(key).equal_to(value).get()
         elif condition == 'lte':
-            user_query = user_query.order_by_child(key).end_at(value)
+            data = user_query.order_by_child(key).end_at(value).get()
         elif condition == 'gte':
-            user_query = user_query.order_by_child(key).start_at(value)
+            data = user_query.order_by_child(key).start_at(value).get()
         else:
             print(f'Invalid Condition on filter: {condition}\n Should be one of eq, lte, gte')
 
     if limit:
+        print(limit, limit_by, order)
         if order == 'asc':
-            user_query.order_by_child(limit_by).limit_to_first(limit)
+            data = user_query.order_by_child(limit_by).limit_to_first(limit).get()
         elif order == 'desc':
-            user_query.order_by_child(limit_by).limit_to_last(limit)
-    return db_to_user(user_query.get())
+            data = user_query.order_by_child(limit_by).limit_to_last(limit).get()
+    return db_to_user(data)
 
 
 def get_user_by_id(user_id):

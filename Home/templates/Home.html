@@ -68,6 +68,36 @@
           </div>
         </div>
       </div>
+      <div class="col-lg-6 mb-4">
+        <div class="card">
+          <div class="border-bottom pt-2 bg-light">
+            <h5 class="mx-3">Top 5 Users by followers</h5>
+          </div>
+          <div class="card-body">
+            <table class="table table-striped">
+            <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Num of Followers</th>
+              <th scope="col">User Name</th>
+            </tr>
+            </thead>
+            <tbody>
+             {% for user in users_by_followers %}
+
+            <tr>
+              <td>{{ user.name }}</td>
+              <td>{{ user.num_followers }}</td>
+              <td>@{{ user.username }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+          </div>
+        </div>
+      </div>
       <div class="row justify-content-md-center">
         <div class="col-lg-8 mb-4">
           <div class="card">

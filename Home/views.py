@@ -81,12 +81,12 @@ def home(request):
             month_ago_date = month_ago_date[:-2] + ":" + month_ago_date[-2:]
             months_ago[month_ago_month] = len(get_filtered_users({'time_created': (month_ago_date, 'lte')}))
 
-        # Top 10 Users with highest number of followers
-        users_by_followers = get_filtered_users({}, 10, 'desc', 'num_followers')
+        # Top 5 Users with highest number of followers
+        users_by_followers = get_filtered_users({},limit = 5, order = 'desc', limit_by='num_followers')
 
         # Users joined through referrals
-        referred_users = len(get_filtered_users({'invited_by_user_profile': ('null', 'eq')}))
-        direct_users = total_users - referred_users
+        direct_users = len(get_filtered_users({'invited_by_user_profile': ('null', 'eq')}))
+        referred_users = total_users - direct_users
 
         # Num of Users joined since a specified date
         time_since = datetime(2020, 5, 1, 0, 0, 0, 0,
@@ -108,7 +108,7 @@ def home(request):
             "referred_users": referred_users,
             "non_social_users": non_social_users,
             "months_ago": months_ago,
-            # "users_by_followers": users_by_followers,
+            "users_by_followers": users_by_followers,
             # "twitter_insta_users": users_with_twitter_or_insta,
             # "users_insta_only": users_with_insta_only,
             # "users_twitter_only": users_with_twitter_only
