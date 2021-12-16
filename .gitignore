@@ -1,0 +1,5 @@
+.DS_STORE
+venv
+authentication_files
+.idea
+__pycache__/
